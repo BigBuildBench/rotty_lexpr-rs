@@ -1,0 +1,35 @@
+[package]
+name = "lexpr"
+description = "A representation for Lisp data"
+version = "0.3.0"
+authors = ["Andreas Rottmann <mail@r0tty.org>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rotty/lexpr-rs"
+readme = "README.md"
+documentation = "https://docs.rs/lexpr/"
+keywords = ["lisp", "s-expression", "sexp", "sexpr"]
+categories = ["encoding", "data-structures", "parser-implementations"]
+edition = "2021"
+rust-version = "1.56"
+
+[features]
+default = ["fast-float-parsing"]
+fast-float-parsing = []
+sexp-macro = ["lexpr-macros"] # MSRV 1.60+: use the `dep:` prefix here
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.5.1"
+lexpr-macros = { version = "0.2.3", path = "../lexpr-macros" }
+quickcheck = "1.0"
+quickcheck_macros = "1.0"
+rand = "0.8.1"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

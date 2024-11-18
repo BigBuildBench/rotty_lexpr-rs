@@ -1,0 +1,65 @@
+on: [pull_request]
+name: CI
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run cargo check
+        run: cargo check --all-features --all-targets
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run cargo test (default features)
+        run: cargo test --all-targets
+
+      - name: Run cargo test (all features)
+        run: cargo test --all-features --all-targets
+
+  msrv-check:
+    # We require at least Rust 1.56, so we can use a current version
+    # of the `proc-macro2` crate, which has an MSRV of 1.56, as of
+    # version 1.0.69.
+    name: "MSRV (1.56) compile check"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install 1.56 toolchain
+        uses: dtolnay/rust-toolchain@1.56
+
+      - name: Run cargo build
+        run: cargo build
+        working-directory: ./msrv-test
+
+  lints:
+    name: Lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run cargo fmt
+        run: cargo fmt --all -- --check
+
+      - name: Run cargo clippy
+        run: cargo clippy -- -D warnings

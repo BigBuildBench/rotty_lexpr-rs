@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "lexpr",
+    "lexpr-macros",
+    "serde-lexpr",
+]
+resolver = "2"
